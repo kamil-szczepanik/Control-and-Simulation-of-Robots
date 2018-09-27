@@ -8,7 +8,16 @@ tower:
     type: effort_controllers/JointPositionController
     joint: head_yaw_revolute_joint_1
     pid: {p: 100.0, i: 10.1, d: 20.0}
-
+  gazebo_ros_control:
+    pid_gains:
+        base_link_left_wheel_joint:
+            p: 100.0
+            i: 0.01
+            d: 10.0
+        base_link_right_wheel_joint:
+            p: 100.0
+            i: 0.01
+            d: 10.0
 elektron:
   joint_state_controller:
     type: joint_state_controller/JointStateController
@@ -22,7 +31,16 @@ elektron:
     type: effort_controllers/JointPositionController
     joint: base_link_right_wheel_joint
     pid: {p: 100.0, i: 0.1, d: 10.0}
-
+  gazebo_ros_control:
+    pid_gains:
+        base_link_left_wheel_joint:
+            p: 100.0
+            i: 0.01
+            d: 10.0
+        base_link_right_wheel_joint:
+            p: 100.0
+            i: 0.01
+            d: 10.0
   mobile_base_controller:
     type        : "diff_drive_controller/DiffDriveController"
     left_wheel  : 'base_link_left_wheel_joint'
