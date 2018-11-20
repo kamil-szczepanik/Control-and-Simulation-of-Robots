@@ -11,7 +11,7 @@
   
   <!-- Gazebo model spawner -->
   <node name="spawn_elektron_model" pkg="gazebo_ros" type="spawn_model"
-        args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -Y 3.141592 -param robot_description -model $(arg base)"/>
+        args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -param robot_description -model $(arg base)"/>
     <!-- elektron control spawner -->
 
  <include file="$(find stero_mobile_init)/launch/$(arg base)_Tower_control.launch.xml" if="$(arg tower)">
