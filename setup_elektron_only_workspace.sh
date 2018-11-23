@@ -4,10 +4,9 @@
 branch_name="melodic-setup-working"
 if [ `git branch --list $branch_name` ]
 then
-    git clone --single-branch -b $branch_name https://github.com/RCPRG-ros-pkg/RCPRG_rosinstall
-fi
-else
     git clone https://github.com/RCPRG-ros-pkg/RCPRG_rosinstall
+else
+    git clone --single-branch -b $branch_name https://github.com/RCPRG-ros-pkg/RCPRG_rosinstall
 fi
 cd RCPRG_rosinstall
 chmod +x setup.sh
