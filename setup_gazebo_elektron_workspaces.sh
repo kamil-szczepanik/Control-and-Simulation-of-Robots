@@ -15,3 +15,12 @@ chmod +x setup.sh
 # coppy compiled workspaces to your /opt directory
 sudo cp -r build/opt/ws_gazebo /opt/
 sudo cp -r build/opt/ws_elektron /opt/
+# remove workspace build folder 
+cd ..
+read -p "Would you like to remove the build directory? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    rm -rf RCPRG_rosinstall
+fi
+
