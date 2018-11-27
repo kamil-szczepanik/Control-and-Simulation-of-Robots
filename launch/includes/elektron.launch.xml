@@ -5,8 +5,8 @@
   <arg name="base"/> 
   <arg name="use_sim"/> 
  <arg name="use_diff_drive_controller" default="1"/>
-  <arg name="urdf_file" default="$(find xacro)/xacro '$(find elektron_description)/robots/$(arg base)_$(arg laser)_Tower-$(arg tower_sensor).urdf.xacro' use_sim:=$(arg use_sim) use_diff_drive_controller:=$(arg use_diff_drive_controller)" if="$(arg tower)"/>
-  <arg name="urdf_file" default="$(find xacro)/xacro '$(find elektron_description)/robots/$(arg base)_$(arg laser)_NoTower.urdf.xacro' use_sim:=$(arg use_sim) use_diff_drive_controller:=$(arg use_diff_drive_controller)" unless="$(arg tower)"/>
+  <arg name="urdf_file" default="$(find xacro)/xacro '$(find stero_mobile_init)/config/.robots/$(arg base)_$(arg laser)_Tower-$(arg tower_sensor).urdf.xacro' use_sim:=$(arg use_sim) use_diff_drive_controller:=$(arg use_diff_drive_controller)" if="$(arg tower)"/>
+  <arg name="urdf_file" default="$(find xacro)/xacro '$(find stero_mobile_init)/config/.robots/$(arg base)_$(arg laser)_NoTower.urdf.xacro' use_sim:=$(arg use_sim) use_diff_drive_controller:=$(arg use_diff_drive_controller)" unless="$(arg tower)"/>
   <param name="robot_description" command="$(arg urdf_file)" />
   
   <!-- Gazebo model spawner -->
