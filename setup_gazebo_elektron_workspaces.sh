@@ -8,6 +8,7 @@ then
 else
     git clone --single-branch -b $branch_name https://github.com/RCPRG-ros-pkg/RCPRG_rosinstall
 fi
+sudo apt install fakechroot
 cd RCPRG_rosinstall
 chmod +x setup.sh
 ./setup.sh -g -e -F -d build -b Release -i /opt
