@@ -5,6 +5,6 @@
 <maintainer email="DO UZUPELNIENIA"> DO UZUPELNIENIA!!!! </maintainer>
 <license>BSD</license>
   <buildtool_depend>catkin</buildtool_depend>
-  <run_depend>elektron</run_depend>
+  <run_depend>velma_common</run_depend>
 
 </package>
