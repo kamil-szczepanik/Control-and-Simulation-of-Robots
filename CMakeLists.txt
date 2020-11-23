@@ -6,7 +6,7 @@ catkin_package(
 #   INCLUDE_DIRS include
 #   LIBRARIES ${PROJECT_NAME}
 #   CATKIN_DEPENDS roscpp nodelet
-   DEPENDS elektron
+#   DEPENDS elektron
 )
 
 install (DIRECTORY worlds/ DESTINATION share/${CMAKE_PROJECT_NAME}/worlds 
@@ -14,4 +14,6 @@ install (DIRECTORY worlds/ DESTINATION share/${CMAKE_PROJECT_NAME}/worlds
 install (DIRECTORY launch/ DESTINATION share/${CMAKE_PROJECT_NAME}/launch 
          FILES_MATCHING PATTERN "*.launch*")
 install (DIRECTORY config/ DESTINATION share/${CMAKE_PROJECT_NAME}/config 
+         FILES_MATCHING PATTERN "*.yaml")
+install (DIRECTORY param/ DESTINATION share/${CMAKE_PROJECT_NAME}/param 
          FILES_MATCHING PATTERN "*.yaml")
