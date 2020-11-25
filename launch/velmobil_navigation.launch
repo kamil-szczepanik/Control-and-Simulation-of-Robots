@@ -1,9 +1,10 @@
 <launch>
-	<arg name="world_name" default="$(find stero_mobile_init)/worlds/stero_mobile.world" />
-	
-	<param name="/sim_mode" type="string" value="gazebo" />
-	<arg name="mobile_base" default="true" />
 
+	<arg name="world_name" default="$(find stero_mobile_init)/worlds/stero_mobile.world" />	
+	<arg name="mobile_base" default="true" />
+	<arg name="use_gpu_ray" default="true" />
+
+	<param name="/sim_mode" type="string" value="gazebo" />
 
   <arg name="GAZEBO_MODEL_PATH" default=""/>
   <arg name="GAZEBO_RESOURCE_PATH" default=""/>
@@ -15,6 +16,7 @@
 	<include file="$(find velma_common)/launch/velma_system.launch">
 		<arg name="world_name" value="$(arg world_name)" />
 		<arg name="mobile_base" value="$(arg mobile_base)" />
+		<arg name="use_gpu_ray" value="$(arg use_gpu_ray)" />
 	</include>
 
 	<!-- octomap server -->
