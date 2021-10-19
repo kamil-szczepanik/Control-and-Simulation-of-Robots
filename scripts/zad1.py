@@ -8,24 +8,18 @@ import math
 from datetime import datetime
 import time
 
+
 def zad1():
     VEL_LIN = 0.08
     VEL_ANG = 0.09
 
-
     TURN_RIGHT = 0
     SIDE_LENGHT = 1.0
-    
-
-
-
 
     pub = rospy.Publisher('key_vel', Twist, queue_size=10)
     sub = rospy.Subscriber("/mobile_base_controller/odom", Odometry, callback)
     rospy.init_node('zad1', anonymous=True)
-    rate = rospy.Rate(50) # 10hz
-
-
+    rate = rospy.Rate(50)  # 10hz
 
     vel = Twist()
     START_TIME = rospy.Time.now()
@@ -38,20 +32,24 @@ def zad1():
         vel.linear.x = lin
         vel.angular.z = ang
         pub.publish(vel)
-        
+
         rate.sleep()
+
 
 def callback(data):
     #rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.pose.pose.position.x)
     global pose
     pose = Pose()
     pose = data.pose.pose
-    
+
+
 def calc_time_lin(a, vel_lin):
     return a/vel_lin
 
+
 def calc_time_ang(vel_ang):
     return (math.pi/2)/vel_ang
+
 
 def go_square(side_lenght, turn_right, vel_lin, vel_ang):
 
@@ -60,7 +58,7 @@ def go_square(side_lenght, turn_right, vel_lin, vel_ang):
     TIME_LIN = calc_time_lin(side_lenght, vel_lin)
     TIME_ANG = calc_time_ang(vel_ang)
 
-    duration = time.time() -start_time
+    duration = time.time() - start_time
     print(duration)
     if duration < TIME_LIN:
         lin = vel_lin
@@ -73,9 +71,7 @@ def go_square(side_lenght, turn_right, vel_lin, vel_ang):
         lin = 0
         ang = vel_ang
 
-
     return lin, ang
-
 
 
 if __name__ == '__main__':
@@ -83,4 +79,3 @@ if __name__ == '__main__':
         zad1()
     except rospy.ROSInterruptException:
         pass
-
