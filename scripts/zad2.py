@@ -9,14 +9,14 @@ from rospy.core import is_initialized
 import tf
 
 
-def zad1():
+def zad2():
 
-    # VEL_LIN = 0.08
-    # VEL_ANG = 0.09
+    VEL_LIN = 0.08
+    VEL_ANG = 0.09
 
-    VEL_LIN = 0.3
-    VEL_ANG = 0.3
-    TURN_RIGHT = False
+    # VEL_LIN = 0.3
+    # VEL_ANG = 0.3
+    TURN_RIGHT = True
     SIDE_LENGHT = 1.0
     global is_initialized
     is_initialized = False
@@ -24,7 +24,7 @@ def zad1():
     pub = rospy.Publisher('key_vel', Twist, queue_size=10)
     sub = rospy.Subscriber("/mobile_base_controller/odom", Odometry, callback)
     rospy.init_node('zad1', anonymous=True)
-    rate = rospy.Rate(50)  # 10hz
+    rate = rospy.Rate(50)  # 50hz
 
     vel = Twist()
 
@@ -47,14 +47,12 @@ def callback(data):
 def go_square(side_lenght, turn_right, vel_lin, vel_ang):
     global is_initialized
     global goal_pose
-    global it
+    global goal_index
+    poses = get_goal_poses(side_lenght, turn_right)
     if not is_initialized:
-        global goal_pose
-        global it
-        poses = get_goal_poses(side_lenght, turn_right)
-        it = iter(poses)
-        goal_pose = next(it)
+        goal_index = 0
         is_initialized = True
+    goal_pose = poses[goal_index]
     print(goal_pose)
     if not is_angle_achived(goal_pose, tolerance=0.01):
         lin = 0.0
@@ -65,16 +63,23 @@ def go_square(side_lenght, turn_right, vel_lin, vel_ang):
         ang = 0.0
         print("distance not achived")
     else:
-        goal_pose = next(it)
-        lin = 0.0
-        ang = 0.0
+        if len(poses)-1 != goal_index:
+            goal_index += 1
+            lin = 0.0
+            ang = 0.0
+        else:
+            goal_index=0
+            lin = 0.0
+            ang = 0.0
 
     return lin, ang
 
 
 def get_goal_poses(side_lenght, turn_right):
-    return [(side_lenght, 0), (side_lenght, side_lenght), (0, side_lenght)]
-
+    if turn_right:
+        return [(side_lenght, 0.0), (side_lenght, -side_lenght), (0.0, -side_lenght), (0.0,0.0)]
+    else:
+        return [(side_lenght, 0.0), (side_lenght, side_lenght), (0.0, side_lenght), (0.0,0.0)]
 
 def get_distance(goal_pose):
     global pose
@@ -103,12 +108,14 @@ def is_angle_achived(goal_pose, tolerance):
 
 
 def get_ang_vel(vel_ang, turn_right):
-    # do poprawy w zależnosci od strony w ktora ma sie poruszzac (zeby jak najszyvciej osiągnać zadaną stopień)
-    return vel_ang
+    if turn_right:
+        return -vel_ang
+    else:
+        return vel_ang
 
 
 if __name__ == '__main__':
     try:
-        zad1()
+        zad2()
     except rospy.ROSInterruptException:
         pass
