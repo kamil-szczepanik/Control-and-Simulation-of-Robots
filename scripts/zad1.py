@@ -10,10 +10,10 @@ import time
 
 
 def zad1():
-    VEL_LIN = 0.08
-    VEL_ANG = 0.09
+    VEL_LIN = 0.08*2.4*2.4
+    VEL_ANG = 0.09*2.4*2.4
 
-    TURN_RIGHT = 1
+    TURN_RIGHT = 0
     SIDE_LENGHT = 1.0
 
     pub = rospy.Publisher('key_vel', Twist, queue_size=10)
