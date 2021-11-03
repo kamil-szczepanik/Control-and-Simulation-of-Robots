@@ -24,8 +24,8 @@ def zad2():
 
 
     if were_both_callbacks==2:
-        tra = [-0.496, 0.046, 0.000]
-        q = [0.000, 0.000, 0.981, 0.195]
+        tra = [-0.529, 0.136, 0.000]
+        q = [0.000, 0.000, 0.974, 0.227]
 
         f1 = posemath.fromMsg(odom.pose.pose)
         f2 = PyKDL.Frame(PyKDL.Rotation.Quaternion(
@@ -77,8 +77,8 @@ if __name__ == '__main__':
         were_both_callbacks = 0
         global odomToMapWriter
         global posewriter
-        odomToMapWriter = WriterCsv("odom_mala_predkosc.csv")
-        posewriter = WriterCsv("mappose_mala_predkosc.csv")
+        odomToMapWriter = WriterCsv("odom_wysoka_predkosc.csv")
+        posewriter = WriterCsv("mappose_wysoka_predkosc.csv")
         while not rospy.is_shutdown():
             zad2()
             rate = rospy.Rate(10)  # 10hz
