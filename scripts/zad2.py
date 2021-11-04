@@ -11,12 +11,12 @@ import tf
 
 def zad2():
 
-    VEL_LIN = 0.08
-    VEL_ANG = 0.09
+    VEL_LIN = 0.08*2.4*2.4
+    VEL_ANG = 0.09*2.4*2.4
 
     # VEL_LIN = 0.3
     # VEL_ANG = 0.3
-    TURN_RIGHT = True
+    TURN_RIGHT = False
     SIDE_LENGHT = 1.0
     global is_initialized
     is_initialized = False
@@ -54,7 +54,7 @@ def go_square(side_lenght, turn_right, vel_lin, vel_ang):
         is_initialized = True
     goal_pose = poses[goal_index]
     print(goal_pose)
-    if not is_angle_achived(goal_pose, tolerance=0.01):
+    if not is_angle_achived(goal_pose, tolerance=0.1):
         lin = 0.0
         ang = get_ang_vel(vel_ang, turn_right)
         print("angle not achived")
