@@ -540,6 +540,16 @@ Visualization Manager:
       Topic: /mobile_base_controller/odom
       Unreliable: false
       Value: true
+    - Alpha: 0.699999988079071
+      Class: rviz/Map
+      Color Scheme: map
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic: /map
+      Unreliable: false
+      Use Timestamp: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -568,16 +578,16 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 14.469112396240234
+      Distance: 9.170507431030273
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.14372140169143677
-        Y: 1.5052415132522583
-        Z: 0.9096421003341675
+        X: 0.4892050325870514
+        Y: 0.3255273997783661
+        Z: 1.3928440809249878
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
@@ -604,5 +614,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1458
-  X: 460
+  X: 459
   Y: 25
