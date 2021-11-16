@@ -1,13 +1,26 @@
 cmake_minimum_required(VERSION 3.5)
 project(stero_mobile_init)
 set(CMAKE_CXX_STANDARD 11)
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED roscpp rospy std_msgs genmsg tf2_ros costmap_2d global_planner nav_msgs base_local_planner clear_costmap_recovery rotate_recovery)
+
+generate_messages(DEPENDENCIES std_msgs)
+
+
 catkin_package(
 #   INCLUDE_DIRS include
 #   LIBRARIES ${PROJECT_NAME}
 #   CATKIN_DEPENDS roscpp nodelet
 #   DEPENDS elektron
 )
+
+
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+
+add_executable(navi scripts/p.cpp)
+target_link_libraries(navi ${catkin_LIBRARIES})
+add_dependencies(navi stero_mobile_init_generate_messages_cpp)
+
 
 install (DIRECTORY worlds/ DESTINATION share/${CMAKE_PROJECT_NAME}/worlds 
          FILES_MATCHING PATTERN "*.world")

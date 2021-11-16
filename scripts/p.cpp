@@ -6,11 +6,14 @@
 
 #include "nav_msgs/Odometry.h"
 #include "geometry_msgs/PoseStamped.h"
+#include "geometry_msgs/Twist.h"
 
 #include <sstream>
 
 geometry_msgs::PoseStamped goal;
 geometry_msgs::PoseStamped odomPose;
+geometry_msgs::Twist Tiago_vel;
+
 std::vector<geometry_msgs::PoseStamped> global_planner_path;
 
 void odom_callback(const nav_msgs::Odometry::ConstPtr &msg)
@@ -62,20 +65,19 @@ int main(int argc, char **argv)
         // move = true;
         ROS_INFO("Planning");
 
-        std_msgs::String msg;
+        velocityPublisher.publish(Tiago_vel);
 
-        std::stringstream ss;
-        ss << "hello world " << count;
-        msg.data = ss.str();
+        // std_msgs::String msg;
 
-        ROS_INFO("%s", msg.data.c_str());
+        // std::stringstream ss;
+        // ss << "hello world " << count;
+        // msg.data = ss.str();
 
-        chatter_pub.publish(msg);
+        // ROS_INFO("%s", msg.data.c_str());
 
         ros::spinOnce();
 
         loop_rate.sleep();
-        ++count;
     }
 
     return 0;
