@@ -30,8 +30,6 @@ void handle_goal(const geometry_msgs::PoseStamped::ConstPtr &msg)
 
     goal = *msg;
     goal.header.frame_id = "map";
-    // makeGlobalPlan = true;
-    // isGoal = true;
     ROS_INFO("Goal passed successfully");
 }
 
@@ -43,26 +41,23 @@ int main(int argc, char **argv)
     ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
     ros::Rate loop_rate(10);
 
-    // tf2_ros::Buffer buffer(ros::Duration(10));
+    tf2_ros::Buffer buffer(ros::Duration(10));
 
-    // tf2_ros::TransformListener tf(buffer);
-    // costmap_2d::Costmap2DROS global_costmap("global_costmap", buffer);
+    tf2_ros::TransformListener tf(buffer);
+    costmap_2d::Costmap2DROS global_costmap("global_costmap", buffer);
 
     // global_planner::GlobalPlanner global_planner("global_planner", global_costmap.getCostmap(), "map");
 
-    ros::Subscriber goalSubscriber = n.subscribe("/move_base_simple/goal", 1000, handle_goal);
-    ros::Subscriber odometrySubscriber = n.subscribe("/mobile_base_controller/odom", 1000, odom_callback);
+    ros::Subscriber goalSubscriber = n.subscribe(
+        "/move_base_simple/goal", 1000, handle_goal);
+    ros::Subscriber odometrySubscriber = n.subscribe(
+        "/mobile_base_controller/odom", 1000, odom_callback);
     ros::Publisher velocityPublisher = n.advertise<geometry_msgs::Twist>("nav_vel", 1000);
 
     int count = 0;
     while (ros::ok())
     {
 
-        // globalPlanner.makePlan(odomPose, goal, global_planner_path);
-        // globalPlanner.publishPlan(global_planner_path);
-        // local_trajectory_planner.setPlan(global_planner_path);
-        // makeGlobalPlan = false;
-        // move = true;
         ROS_INFO("Planning");
 
         velocityPublisher.publish(Tiago_vel);
