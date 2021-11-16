@@ -8,7 +8,9 @@
 #include "geometry_msgs/PoseStamped.h"
 #include "geometry_msgs/Twist.h"
 
-#include <sstream>
+#include "global_planner/planner_core.h"
+
+#include <base_local_planner/trajectory_planner_ros.h>
 
 geometry_msgs::PoseStamped goal;
 geometry_msgs::PoseStamped odomPose;
@@ -38,7 +40,6 @@ int main(int argc, char **argv)
 
     ros::init(argc, argv, "navi");
     ros::NodeHandle n;
-    ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
     ros::Rate loop_rate(10);
 
     tf2_ros::Buffer buffer(ros::Duration(10));
@@ -46,7 +47,12 @@ int main(int argc, char **argv)
     tf2_ros::TransformListener tf(buffer);
     costmap_2d::Costmap2DROS global_costmap("global_costmap", buffer);
 
-    // global_planner::GlobalPlanner global_planner("global_planner", global_costmap.getCostmap(), "map");
+    costmap_2d::Costmap2DROS localCostmap("local_costmap", buffer);
+    global_planner::GlobalPlanner global_planner(
+        "global_planner", global_costmap.getCostmap(), "map");
+
+    base_local_planner::TrajectoryPlannerROS local_trajectory_planner;
+    local_trajectory_planner.initialize("local_planner", &buffer, &localCostmap);
 
     ros::Subscriber goalSubscriber = n.subscribe(
         "/move_base_simple/goal", 1000, handle_goal);
@@ -60,6 +66,10 @@ int main(int argc, char **argv)
 
         ROS_INFO("Planning");
 
+        global_planner.makePlan(odomPose, goal, global_planner_path);
+        global_planner.publishPlan(global_planner_path);
+        local_trajectory_planner.setPlan(global_planner_path);
+        local_trajectory_planner.computeVelocityCommands(Tiago_vel);
         velocityPublisher.publish(Tiago_vel);
 
         // std_msgs::String msg;
