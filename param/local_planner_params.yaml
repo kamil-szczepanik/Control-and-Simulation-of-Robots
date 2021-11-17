@@ -2,22 +2,32 @@
 local_planner:
     dwa: true               # uzywanie Dynamic Window Approach
     holonomic_robot: false
-    meter_scoring: true     # odleglosc jest w metrach
+    meter_scoring: true     # odleglosc jest w metrach a nie w komorkach
     sim_time: 5.0           # ile sekund symulacji w przod
 
     # predkosci robota
-    min_vel_x: 0.0
+    min_vel_x: 0.1
     max_vel_x: 1.0
-    max_vel_theta: -1.5
-    max_vel_theta: 1.5
+    max_vel_theta: -1.0
+    max_vel_theta: 1.0
 
     min_in_place_vel_theta: 0.4
 
-    acc_lim_y: 0.0
     acc_lim_x: 2.5
     acc_lim_theta: 3.2
+
+    max_rot_vel: 0.5 
+    min_rot_vel: 0.0
     
-    occdist_scale: 0.2      # jak bardzo kontroler powinien omijac przeszkody
+    occdist_scale: 3.0    # jak bardzo kontroler powinien omijac przeszkody
     heading_lookahead: 0.6
     xy_goal_tolerance: 0.1
     yaw_goal_tolerance: 0.1
+
+
+    sim_granularity: 0.025
+    controller_frequency: 20.0
+    escape_vel: -0.1 
+
+    pdist_scale: 3.0
+    # occdist_scale: 0.8

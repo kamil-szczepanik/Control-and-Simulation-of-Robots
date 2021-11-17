@@ -8,7 +8,6 @@ find_package(catkin REQUIRED
     costmap_2d
     global_planner
     dwa_local_planner
-    rotate_recovery
     nav_msgs
     roscpp
     base_local_planner

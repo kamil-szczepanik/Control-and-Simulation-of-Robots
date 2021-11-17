@@ -44,8 +44,8 @@ int main(int argc, char **argv){
     base_local_planner::TrajectoryPlannerROS local_planner;
     local_planner.initialize("local_planner", &buffer, &local_costmap);
 
-    rotate_recovery::RotateRecovery recovery_behaviour_rotate;
-    recovery_behaviour_rotate.initialize("recovery_behaviour", &buffer, &global_costmap, &local_costmap);
+    rotate_recovery::RotateRecovery rr;
+    rr.initialize("recovery_behaviour", &buffer, &global_costmap, &local_costmap);
 
     while(ros::ok()) {
         if(new_goal) {
@@ -63,7 +63,7 @@ int main(int argc, char **argv){
             }
             else {
                 ROS_INFO("Recovery behaviour");
-                recovery_behaviour_rotate.runBehavior();
+                rr.runBehavior();
             }
             if(local_planner.isGoalReached()) {
                 ROS_INFO("Goal reached !");
