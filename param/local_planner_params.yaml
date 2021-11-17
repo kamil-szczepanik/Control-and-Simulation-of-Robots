@@ -1,9 +1,8 @@
-
 local_planner:
     dwa: true               # uzywanie Dynamic Window Approach
     holonomic_robot: false
     meter_scoring: true     # odleglosc jest w metrach a nie w komorkach
-    sim_time: 5.0           # ile sekund symulacji w przod
+    sim_time: 1.0           # ile sekund symulacji w przod
 
     # predkosci robota
     min_vel_x: 0.1
@@ -25,9 +24,9 @@ local_planner:
     yaw_goal_tolerance: 0.1
 
 
-    sim_granularity: 0.025
-    controller_frequency: 20.0
-    escape_vel: -0.1 
+    # sim_granularity: 0.025
+    # controller_frequency: 20.0
+    # escape_vel: -0.1 
 
-    pdist_scale: 5.0
+    pdist_scale: 4.0
     # occdist_scale: 0.8
