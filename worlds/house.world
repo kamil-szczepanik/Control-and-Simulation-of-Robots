@@ -82,7 +82,7 @@
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
-    <model name='mapa1'>
+    <model name='house'>
       <pose frame=''>-1.13938 0.029786 0 0 -0 0</pose>
       <link name='Wall_59'>
         <collision name='Wall_59_Collision'>
@@ -776,7 +776,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='mapa1'>
+      <model name='house'>
         <pose frame=''>-2.67718 -2.39763 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='Wall_59'>

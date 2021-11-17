@@ -82,7 +82,7 @@
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
-    <model name='korytarz'>
+    <model name='corridor'>
       <pose frame=''>-0.633505 0.696851 0 0 -0 0</pose>
       <link name='Wall_0'>
         <collision name='Wall_0_Collision'>
@@ -326,7 +326,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='korytarz'>
+      <model name='corridor'>
         <pose frame=''>11.3125 1.25713 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='Wall_0'>
