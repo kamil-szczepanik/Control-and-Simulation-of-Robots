@@ -19,7 +19,7 @@ local_planner:
     max_rot_vel: 0.5 
     min_rot_vel: 0.0
     
-    occdist_scale: 3.0    # jak bardzo kontroler powinien omijac przeszkody
+    occdist_scale: 0.1    # jak bardzo kontroler powinien omijac przeszkody
     heading_lookahead: 0.6
     xy_goal_tolerance: 0.1
     yaw_goal_tolerance: 0.1
@@ -29,5 +29,5 @@ local_planner:
     controller_frequency: 20.0
     escape_vel: -0.1 
 
-    pdist_scale: 3.0
+    pdist_scale: 5.0
     # occdist_scale: 0.8
