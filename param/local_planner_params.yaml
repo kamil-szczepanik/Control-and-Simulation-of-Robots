@@ -31,3 +31,40 @@ local_planner:
     gdist_scale: 2 # wspolczynnik mowiacy jak bardzo kontroler powinien probowac osiagniecie celu ( tez predkosc)
     pdist_scale: 3 # współczynnik mowiacy jak blisko kontroler powinien trzymac sie sciezki
     occdist_scale: 0.1 # współczynnik mowiacy jak bardzo kontroler powinien unikac przeszkod
+
+
+    # local_planner:
+   
+    # # Robot Configuration Parameters
+    # # predkosci i przyspieszenia
+    # max_vel_x: 0.3
+    # min_vel_x: 0.05 
+    # max_vel_y: 0
+
+    # max_rot_vel: 0.5
+    # min_rot_vel: -0.5
+
+    # acc_lim_theta: 2.0
+    # acc_lim_x: 1.0
+
+    # # dwa: true               # uzywanie Dynamic Window Approach
+
+    # holonomic_robot: false # robot jest nieholonomiczny  
+
+    # # Goal Tolerance Parameters
+    # yaw_goal_tolerance: 0.15   # 0.05
+    # xy_goal_tolerance: 0.2    # 0.10
+
+    # # ustawienia algorytmu dwa
+    # # Forward Simulation Parameters
+    # sim_time: 3.0  # czas symulacji ruchu (3 sekundy do przodu)
+    # vx_samples: 20 # probkowanie po prędkości x
+    # vtheta_samples: 40  #probkowanie po prędkości kątowej 
+
+    # # Trajectory Scoring Parameters
+    # meter_scoring: true # odległość w metrach
+    # penalize_negative_x: false # nie ma kary za oddalenie sie od celu
+ 
+    # gdist_scale: 2 # wspolczynnik mowiacy jak bardzo kontroler powinien probowac osiagniecie celu ( tez predkosc)
+    # pdist_scale: 3 # współczynnik mowiacy jak blisko kontroler powinien trzymac sie sciezki
+    # occdist_scale: 0.1 # współczynnik mowiacy jak bardzo kontroler powinien unikac przeszkod

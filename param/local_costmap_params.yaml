@@ -12,7 +12,7 @@ local_costmap:
 
     # warstwa nadmuchania
     inflation_layer:
-        inflation_radius: 0.3 # promien nadmuchania - odleglosc od scian
+        inflation_radius: 0.05 # promien nadmuchania - odleglosc od scian
         cost_scaling_factor: 5 # funkcja kosztu: exp(-1.0 * cost_scaling_factor * (distance_from_obstacle - inscribed_radius)) * (costmap_2d::INSCRIBED_INFLATED_OBSTACLE - 1)
         
 

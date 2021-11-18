@@ -79,5 +79,6 @@
     <rosparam file="$(find stero_mobile_init)/param/local_costmap_params.yaml" command="load"/>
     <rosparam file="$(find stero_mobile_init)/param/global_costmap_params.yaml" command="load"/>
     <rosparam file="$(find stero_mobile_init)/param/local_planner_params.yaml" command="load"/>
+    <rosparam file="$(find stero_mobile_init)/param/global_planner.yaml" command="load"/>
   </node>
 </launch>

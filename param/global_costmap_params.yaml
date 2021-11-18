@@ -8,8 +8,9 @@ global_costmap:
 
     # warstwa nadmuchania
     inflation_layer: 
-        inflation_radius: 0.5 # promień nadmuchania - odleglosc od sciany
+        radius: 0.5 # promień nadmuchania - odleglosc od sciany
         cost_scaling_factor: 10 # funkcja kosztu: exp(-1.0 * cost_scaling_factor * (distance_from_obstacle - inscribed_radius)) * (costmap_2d::INSCRIBED_INFLATED_OBSTACLE - 1)
 
     publish_frequency: 1.0
     robot_radius: 0.26 # promien robota
+    update_frequency: 10
