@@ -1,13 +1,15 @@
 global_costmap:
+    # warstwy globalnej mapy kosztow
     plugins: 
-        - {name: static_map,       type: "costmap_2d::StaticLayer"} 
-        - {name: inflation_layer,  type: "costmap_2d::InflationLayer"}
+        - {name: static_map, type: "costmap_2d::StaticLayer"} 
+        - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
+
+    static_map: true # mapa statyczna, czyli ta utworzona na laboratorium za pomoca gmapping (SLAM)
+
+    # warstwa nadmuchania
+    inflation_layer: 
+        inflation_radius: 0.5 # promień nadmuchania - odleglosc od sciany
+        cost_scaling_factor: 10 # funkcja kosztu: exp(-1.0 * cost_scaling_factor * (distance_from_obstacle - inscribed_radius)) * (costmap_2d::INSCRIBED_INFLATED_OBSTACLE - 1)
 
     publish_frequency: 1.0
-    static_map: true
-    robot_radius: 0.26
-    always_send_full_costmap: true
-
-    inflation_layer:
-        inflation_radius: 0.5
-        cost_scaling_factor: 5
+    robot_radius: 0.26 # promien robota
