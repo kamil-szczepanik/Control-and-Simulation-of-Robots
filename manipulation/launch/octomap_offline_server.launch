@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+ <launch>
+   <arg name="octomap_file" default="$(find manipulation)/data/octomap_lab.bt"/>
+   <node name="om_server" pkg="octomap_server" type="octomap_server_node" output="screen" args="$(arg octomap_file)" >
+   <param name="frame_id" type="string" value="world" />
+ </node>
+ </launch>
+
+ <!-- <?xml version="1.0"?>
+<launch>
+  <include file="$(find velma_common)/launch/octomap_offline_server.launch">
+    Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable
+    <arg name="octomap_file" value="$(find manipulation)/data/octomap_lab.bt" />
+
+  </include>
+
+</launch> -->
