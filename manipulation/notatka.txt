@@ -1,0 +1,28 @@
+Podano w sugerowanej kolejności uruchamiania:
+
+Czyszczenie sarych wiadomości:
+rosrun octomap_server octomap_saver
+
+Odpalanie systemu:
+roslaunch manipulation tables.launch
+
+Odpalenie planera:
+roslaunch velma_ros_plugin velma_planner.launch
+
+Odpalenie gazebo i rviza:
+roslaunch manipulation sim.launch
+
+
+Odpalenie offline octomapy:
+roslaunch manipulation octomap_offline_server.launch
+
+=======================================================
+Inicjalizacja robota:
+rosrun velma_task_cs_ros_interface initialize_robot.py
+------------------------------------------------
+Ruch głową i korpusem:
+rosrun manipulation test_head.py
+------------------------------------------------
+Odpalenie octomapy online:
+roslaunch velma_common octomap_server.launch
+------------------------------------------------
