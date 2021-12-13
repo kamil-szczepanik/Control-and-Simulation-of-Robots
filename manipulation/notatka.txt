@@ -1,7 +1,7 @@
 Podano w sugerowanej kolejności uruchamiania:
 
 Czyszczenie sarych wiadomości:
-rosrun octomap_server octomap_saver
+rosrun velma_common reset_shm_comm.py
 
 Odpalanie systemu:
 roslaunch manipulation tables.launch
@@ -26,3 +26,29 @@ rosrun manipulation test_head.py
 Odpalenie octomapy online:
 roslaunch velma_common octomap_server.launch
 ------------------------------------------------
+
+W PRZESTRZENI KARTEZJENSKIEJ:
+    Pozycja przygotowania do chwytu left_arm_tool:
+    Wstępna:
+        Position: 0.43378; 0.4633; 0.97565
+        Orientation: 0.039055; 0.016422; 0.9991; 0.00098
+    Dobra:
+        Position: 0.85081-0.5; 0.47592; 0.86+0.1
+        Orientation: 0.039055; 0.016422; 0.9991; 0.00098
+    Do implementacji:
+        Position: object1.x-0.5; object1.y; object1.z+0.1
+        można sprobowac: Orientation: 0.0; 0.0; 1; 0.0
+        a jak nie to: Orientation: 0.007389; 0.031124; 0.99948; 0.003047
+
+
+
+W PRZESTRZENI KARTEZJENSKIEJ:
+    Pozycja do chwytu left_arm_tool:
+    Do implementacji:
+        Position: object1.x-0.25; object1.y+0.02; object1.z+0.1
+        można sprobowac: Orientation: 0.0; 0.0; 1; 0.0
+        a jak nie to: Orientation: 0.007389; 0.049949; 0.99872; 0.00425
+
+Pozycja obiektu:
+Position: 0.85081; 0.47592; 0.86
+Orientation: 0.0, 0.0, 0.0, 1
