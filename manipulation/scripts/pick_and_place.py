@@ -24,7 +24,7 @@ class StateMachine:
     def set_start(self, name):
         self.startState = name.upper()
 
-    def run(self):
+    def run(self, cargo):
         try:
             handler = self.handlers[self.startState]
         except:
@@ -33,35 +33,24 @@ class StateMachine:
             raise  InitializationError("at least one state must be an end_state")
     
         while True:
-            newState = handler()
+            (newState, cargo) = handler(cargo)
             if newState.upper() in self.endStates:
                 print("reached ", newState)
                 break 
             else:
                 handler = self.handlers[newState.upper()]  
 
-def initialization():
-    rospy.init_node('pick_and_place')
 
-    rospy.sleep(0.5)
-
-    print("This test/tutorial executes simple motions"\
-        " in joint impedance mode. Planning is not used"\
-        " in this example.")
-
-    print("Running python interface for Velma...")
-    velma = VelmaInterface()
+def initialization(velma):
     print("Waiting for VelmaInterface initialization...")
     if not velma.waitForInit(timeout_s=10.0):
         exitError(1, msg="Could not initialize VelmaInterface")
     print("Initialization ok!")
-
     print("Motors must be enabled every time after the robot enters safe state.")
     print("If the motors are already enabled, enabling them has no effect.")
     print("Enabling motors...")
     if velma.enableMotors() != 0:
         exitError(2, msg="Could not enable motors")
-
     rospy.sleep(0.5)
 
     newState = "Approach_to_object"
@@ -80,14 +69,28 @@ def grab_jar(velma):
     newState = "Go_to_table2"
     return newState
 
-m = StateMachine()
-m.add_state("Initialization", initialization)
-m.add_state("Approach_to_object", ...)
-m.add_state("Grab_object", ...)
-m.add_state("Go_to_table2", ...)
-m.add_state("Approach_to_table2_drop", ...)
-m.add_state("Drop_object", ...)
-m.add_state("Deafault_position", ..., end_state=1)
 
-m.run()
 
+
+
+
+
+if __name__ == "__main__":
+
+    rospy.init_node('pick_and_place')
+
+    rospy.sleep(0.5)
+    print("Running python interface for Velma...")
+    velma = VelmaInterface()
+
+
+    m = StateMachine()
+    m.add_state("Initialization", initialization)
+    m.add_state("Approach_to_object", ...)
+    m.add_state("Grab_object", ...)
+    m.add_state("Go_to_table2", ...)
+    m.add_state("Approach_to_table2_drop", ...)
+    m.add_state("Drop_object", ...)
+    m.add_state("Deafault_position", ..., end_state=1)
+
+    m.run(velma)
