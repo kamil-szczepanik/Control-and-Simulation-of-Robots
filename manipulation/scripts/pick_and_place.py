@@ -307,13 +307,12 @@ def departure_from_object(velma):
     newState = "Approach_to_table2_drop"
     return (newState, velma)
 
-def default_position(velma):
-    pass
+
 
 def approach_to_table2_drop(velma):
     print "Moving left wrist to pose defined in world frame..."
-    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039, 0.016, 1, 0.0 ), PyKDL.Vector( 0.83, -0.04, 0.97 ))
-    if not velma.moveCartImpLeft([T_B_Trd], [3.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
+    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039, 0.016, 1, 0.0 ), PyKDL.Vector( 0.83, -0.1, 0.97 ))
+    if not velma.moveCartImpLeft([T_B_Trd], [4.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
         exitError(8)
     if velma.waitForEffectorLeft() != 0:
         exitError(9)
@@ -323,13 +322,54 @@ def approach_to_table2_drop(velma):
     print T_B_T_diff
     print T_B_T_diff.vel.Norm()
     print T_B_T_diff.rot.Norm()
-    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.07:
+    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.2:
         exitError(10)
 
-    exitError(0)
-
-    newState = "Approach_to_table2_drop"
+    newState = "Drop"
     return (newState, velma)
+
+def drop(velma):
+    print("Dropping jar")
+    dest_q = [math.radians(0), math.radians(0), math.radians(0), math.radians(0)]
+    velma.moveHandLeft(dest_q, [1, 1, 1, 1], [8000, 8000, 8000, 8000], 100000000, hold=False)
+    if velma.waitForHandLeft() != 0:
+        exitError(2)
+
+
+    print("Jar dropped succesfully")
+
+    newState = "Default_position"
+    return (newState, velma)
+
+
+
+def default_position(velma):
+
+    print "Moving left wrist to pose defined in world frame..."
+    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039, 0.016, 1, 0.0 ), PyKDL.Vector( 0.6, -0.1, 1.1 ))
+    if not velma.moveCartImpLeft([T_B_Trd], [4.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
+        exitError(8)
+    if velma.waitForEffectorLeft() != 0:
+        exitError(9)
+    rospy.sleep(0.5)
+    print "calculating difference between desiread and reached pose..."
+    T_B_T_diff = PyKDL.diff(T_B_Trd, velma.getTf("B", "Wl"), 1.0)
+    print T_B_T_diff
+    print T_B_T_diff.vel.Norm()
+    print T_B_T_diff.rot.Norm()
+    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.2:
+        exitError(10)
+
+    initialization(velma)
+
+
+    newState = "Finish"
+    return (newState, velma)
+
+
+def finish(velma):
+    print("Mission passed!\n  Respect +")
+
 
 
 
@@ -351,10 +391,9 @@ if __name__ == "__main__":
     m.add_state("Grab_object", grab_jar)
     m.add_state("Departure_from_object", departure_from_object)
     m.add_state("Approach_to_table2_drop", approach_to_table2_drop)
+    m.add_state("Drop", drop)
+    m.add_state("Default_position", default_position)
+    m.add_state("Finish", finish, end_state=1)
     m.set_start("Initialization")
-    # m.add_state("Go_to_table2", ...)
-    # m.add_state("Drop_object", ...)
-    # m.add_state("Deafault_position", ..., end_state=1)
-    m.add_state("Default_position", default_position, end_state=1)
 
     m.run(velma)
