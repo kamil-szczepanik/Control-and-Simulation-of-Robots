@@ -65,13 +65,13 @@ def initialization(velma):
         'right_arm_6_joint':0,      'left_arm_6_joint':0 }
 
     q_map_1 = {'torso_0_joint':0.0,
-        'right_arm_0_joint':-0.3,   'left_arm_0_joint':0.3,
-        'right_arm_1_joint':-1.57,  'left_arm_1_joint':1.57,
-        'right_arm_2_joint':1.57,   'left_arm_2_joint':-1.57,
-        'right_arm_3_joint':1.57,   'left_arm_3_joint':-1.7,
-        'right_arm_4_joint':0.0,    'left_arm_4_joint':0.0,
-        'right_arm_5_joint':-1.57,  'left_arm_5_joint':1.57,
-        'right_arm_6_joint':0.0,    'left_arm_6_joint':0.0 }
+        'right_arm_0_joint':-0.3, 'left_arm_0_joint':0.3,
+        'right_arm_1_joint':-1.8, 'left_arm_1_joint':1.57,
+        'right_arm_2_joint':1.25, 'left_arm_2_joint':-1.57,
+        'right_arm_3_joint':0.85, 'left_arm_3_joint':-1.7,
+        'right_arm_4_joint':0,    'left_arm_4_joint':0.0,
+        'right_arm_5_joint':-0.5, 'left_arm_5_joint':1.57,
+        'right_arm_6_joint':0,    'left_arm_6_joint':0.0 }
 
     rospy.sleep(0.5)
 
