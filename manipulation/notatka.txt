@@ -58,3 +58,16 @@ W PRZESTRZENI KARTEZJENSKIEJ:
 Pozycja obiektu:
 Position: 0.85081; 0.47592; 0.86
 Orientation: 0.0, 0.0, 0.0, 1
+
+
+
+
+
+q_map_2 = {'torso_0_joint':-0.6674,
+    'right_arm_0_joint':0.4311,  'left_arm_0_joint':-0.2817,
+    'right_arm_1_joint':-1.8279, 'left_arm_1_joint':1.768,
+    'right_arm_2_joint':0.1529,  'left_arm_2_joint':-1.4637,
+    'right_arm_3_joint':0.46215, 'left_arm_3_joint':-1.37117,
+    'right_arm_4_joint':0.762,   'left_arm_4_joint':-0.4979,
+    'right_arm_5_joint':-0.551,  'left_arm_5_joint':1.50468,
+    'right_arm_6_joint':-0.0487, 'left_arm_6_joint':0.8559 }
