@@ -129,6 +129,17 @@ if __name__ == "__main__":
         print "The core_cs should be in jnt_imp state, but it is not"
         exitError(3)
 
+    rospy.sleep(1.0)
+
+    print("Moving to the starting position...")
+    velma.moveJoint(q_map_starting, 9.0, start_time=0.5, position_tol=15.0/180.0*math.pi)
+    error = velma.waitForJoint()
+    if error != 0:
+        exitError(6, msg="The action should have ended without error,"\
+                        " but the error code is {}".format(error))
+
+    rospy.sleep(0.5)
+
     print "Checking if the starting configuration is as expected..."
     rospy.sleep(0.5)
     js = velma.getLastJointState()
@@ -167,17 +178,35 @@ if __name__ == "__main__":
     if velma.waitForEffectorLeft() != 0:
         exitError(9)
 
-    print "Moving right wrist to pose defined in world frame..."
-    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.0 , 0.0 , 0.0 , 1.0 ), PyKDL.Vector( 0.7 , -0.3 , 1.3 ))
-    if not velma.moveCartImpRight([T_B_Trd], [3.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
+    print "Moving left wrist to pose defined in world frame..."
+    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039055, 0.016422, 0.9991, 0.00098 ), PyKDL.Vector( 0.43, 0.46, 0.97 ))
+    if not velma.moveCartImpLeft([T_B_Trd], [5.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
         exitError(8)
-    if velma.waitForEffectorRight() != 0:
+    if velma.waitForEffectorLeft() != 0:
         exitError(9)
     rospy.sleep(0.5)
     print "calculating difference between desiread and reached pose..."
-    T_B_T_diff = PyKDL.diff(T_B_Trd, velma.getTf("B", "Tr"), 1.0)
+    T_B_T_diff = PyKDL.diff(T_B_Trd, velma.getTf("B", "Wl"), 1.0)
     print T_B_T_diff
-    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.05:
+    print T_B_T_diff.vel.Norm()
+    print T_B_T_diff.rot.Norm()
+    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.06:
+        exitError(10)
+
+
+    print "Moving left wrist to pose defined in world frame..."
+    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039, 0.016, 1, 0.0 ), PyKDL.Vector( 0.6, 0.48, 0.97 ))
+    if not velma.moveCartImpLeft([T_B_Trd], [3.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
+        exitError(8)
+    if velma.waitForEffectorLeft() != 0:
+        exitError(9)
+    rospy.sleep(0.5)
+    print "calculating difference between desiread and reached pose..."
+    T_B_T_diff = PyKDL.diff(T_B_Trd, velma.getTf("B", "Wl"), 1.0)
+    print T_B_T_diff
+    print T_B_T_diff.vel.Norm()
+    print T_B_T_diff.rot.Norm()
+    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.06:
         exitError(10)
 
 

@@ -16,6 +16,12 @@ roslaunch manipulation sim.launch
 Odpalenie offline octomapy:
 roslaunch manipulation octomap_offline_server.launch
 
+Odpalenie publikowania pozycji jar_hallow:
+roslaunch rcprg_gazebo_utils gazebo_publish_ros_tf_object.launch link_name:="jar_hollow::link" frame_id:=jar_hollow
+
+Odpalenie pick_and_place
+rosrun manipulation pick_and_place.py
+
 =======================================================
 Inicjalizacja robota:
 rosrun velma_task_cs_ros_interface initialize_robot.py

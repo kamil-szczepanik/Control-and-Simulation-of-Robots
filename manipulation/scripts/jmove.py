@@ -23,10 +23,10 @@ if __name__ == "__main__":
         exitError(1, msg="Could not initialize VelmaInterface")
     print("Initialization ok!")
     
-    # T_B_Jar = velma.getTf("B", "frame_01")
+    T_B_Jar = velma.getTf("Wo", "frame_01")
 
-    # if T_B_Jar is None:
-    #     exitError(997)
+    if T_B_Jar is None:
+        exitError(997)
 
     flips = []
     for flip_shoulder in (True, False):
@@ -54,12 +54,12 @@ if __name__ == "__main__":
     rot = PyKDL.Rotation.Quaternion(0.039055, 0.016422, 0.9991, 0.00098)
     rot.GetRPY()
     
-    T_B_A7d = PyKDL.Frame(PyKDL.Rotation.RPY(*rot.GetRPY()), PyKDL.Vector(*xyz))
-    print(T_B_A7d)
+    # T_B_A7d = PyKDL.Frame(PyKDL.Rotation.RPY(*rot.GetRPY()), PyKDL.Vector(*xyz))
+    print(T_B_Jar)
     arm_q = []
     for flip_shoulder, flip_elbow, flip_ee in flips:
         for elbow_circle_angle in np.linspace(-math.pi, math.pi, 20):
-            q = solv.calculateIkArm(arm_name, T_B_A7d, torso_angle, elbow_circle_angle, flip_shoulder, flip_elbow, flip_ee)
+            q = solv.calculateIkArm(arm_name, T_B_Jar, torso_angle, elbow_circle_angle, flip_shoulder, flip_elbow, flip_ee)
 
             print(q[0])
             if not q[0] is None:
