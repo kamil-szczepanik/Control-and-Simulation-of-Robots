@@ -302,42 +302,7 @@ def departure_from_object(velma):
     print("Moving to second table...")
 
     planAndExecute(q_map_2, p)
-
-
-    # print "Odkladam na stol"
-    # T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039, 0.016, 1, 0.0 ), PyKDL.Vector( 0.6, 0.48, 0.97 ))
-    # if not velma.moveCartImpLeft([T_B_Trd], [3.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
-    #     exitError(8)
-    # if velma.waitForEffectorLeft() != 0:
-    #     exitError(9)
-    # rospy.sleep(0.5)
-    # print "calculating difference between desiread and reached pose..."
-    # T_B_T_diff = PyKDL.diff(T_B_Trd, velma.getTf("B", "Wl"), 1.0)
-    # print T_B_T_diff
-    # print T_B_T_diff.vel.Norm()
-    # print T_B_T_diff.rot.Norm()
-    # if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.07:
-    #     exitError(10)
-
-    # exitError(0)
-
-    print "Moving left wrist to pose defined in world frame..."
-    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039, 0.016, 1, 0.0 ), PyKDL.Vector( 0.83, -0.04, 0.97 ))
-    if not velma.moveCartImpLeft([T_B_Trd], [3.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
-        exitError(8)
-    if velma.waitForEffectorLeft() != 0:
-        exitError(9)
-    rospy.sleep(0.5)
-    print "calculating difference between desiread and reached pose..."
-    T_B_T_diff = PyKDL.diff(T_B_Trd, velma.getTf("B", "Wl"), 1.0)
-    print T_B_T_diff
-    print T_B_T_diff.vel.Norm()
-    print T_B_T_diff.rot.Norm()
-    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.07:
-        exitError(10)
-
-    exitError(0)
-    
+   
 
     newState = "Approach_to_table2_drop"
     return (newState, velma)
