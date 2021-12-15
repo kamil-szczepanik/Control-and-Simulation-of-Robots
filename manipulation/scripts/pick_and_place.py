@@ -7,6 +7,7 @@ from velma_common import *
 from rcprg_ros_utils import exitError
 from rcprg_planner import *
 from velma_kinematics.velma_ik_geom import KinematicsSolverVelma
+from tf_conversions import posemath
 import numpy as np
 
 import math
@@ -239,8 +240,28 @@ def grab_jar(velma):
 def approach_to_object(velma):
 
 
+    T_B_Jar = velma.getTf("B", "jar_hollow")
+
+    obj_pose = posemath.toMsg(T_B_Jar)
+    # print(obj_pose)
+
+    approach_pose = posemath.Pose()
+    approach_pose.position.x = obj_pose.position.x - 0.4
+    approach_pose.position.y = obj_pose.position.y
+    approach_pose.position.z = obj_pose.position.z + 0.1
+    approach_pose.orientation = obj_pose.orientation
+
+    grab_pose = posemath.Pose()
+    grab_pose.position.x = obj_pose.position.x - 0.25
+    grab_pose.position.y = obj_pose.position.y
+    grab_pose.position.z = obj_pose.position.z + 0.1
+    grab_pose.orientation = obj_pose.orientation
+
+    print '\nObject pose:\n' , approach_pose
+
+
     print "Moving left wrist to pose defined in world frame..."
-    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039055, 0.016422, 0.9991, 0.00098 ), PyKDL.Vector( 0.43, 0.46, 0.97 ))
+    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039055, 0.016422, 0.9991, 0.00098 ), PyKDL.Vector( approach_pose.position.x, approach_pose.position.y, approach_pose.position.z ))
     if not velma.moveCartImpLeft([T_B_Trd], [5.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
         exitError(8)
     if velma.waitForEffectorLeft() != 0:
@@ -251,11 +272,11 @@ def approach_to_object(velma):
     print T_B_T_diff
     print T_B_T_diff.vel.Norm()
     print T_B_T_diff.rot.Norm()
-    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.06:
+    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.09:
         exitError(10)
 
     print "Moving left wrist to pose defined in world frame..."
-    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039, 0.016, 1, 0.0 ), PyKDL.Vector( 0.6, 0.48, 0.97 ))
+    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039, 0.016, 1, 0.0 ), PyKDL.Vector( grab_pose.position.x, grab_pose.position.y, grab_pose.position.z ))
     if not velma.moveCartImpLeft([T_B_Trd], [3.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
         exitError(8)
     if velma.waitForEffectorLeft() != 0:
@@ -266,7 +287,7 @@ def approach_to_object(velma):
     print T_B_T_diff
     print T_B_T_diff.vel.Norm()
     print T_B_T_diff.rot.Norm()
-    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.07:
+    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.09:
         exitError(10)
 
     newState = "Grab_object"
