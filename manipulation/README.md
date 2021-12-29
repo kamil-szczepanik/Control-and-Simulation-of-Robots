@@ -1,5 +1,18 @@
 # Projekt 1 - dokumentacja
 
+## Zadanie
+Zadaniem projektu 1 było stworzenie programu, który zada robotowi takie sterowanie, by ten przeniósł obiekt z jednego stołu na drugi.
+
+## Środowisko
+Należało stworzyć świat w Gazebo z dwoma stołami oraz obiektem - słoikiem. W tej części ważne było, aby przedmioty ustawić w odpowiedniej odległości od robota, tzn. w zasięgu jego ramion, ale też nie zbyt blisko.
+
+![Gazebo](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/env_gazebo.png)
+
+## Zebranie octomapy
+Aby ruch robota mógł być planowany, potrzebna jest informacja o otoczeniu robota. Do tego użyto octomapę, która określa zajętość środowiska. Aby nie przeciążać niepotrzebnie systemu, octomapę zbudowano raz i zapisano do pliku. Taką ocotmapę następnie publikowano, dzięki czemu planer Velmy mógł działać. Zbudowaną ocotmapę przedstawiono na poniższym rysunku.
+
+![octomap](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/octomap.png)
+
 ## Uruchomienie
 
 Aby uruchomić system należy:
