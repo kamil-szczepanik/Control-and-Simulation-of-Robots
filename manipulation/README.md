@@ -8,7 +8,7 @@ Należało stworzyć świat w Gazebo z dwoma stołami oraz obiektem - słoikiem.
 
 ![Gazebo](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/env_gazebo.png)
 
-## Zebranie octomapy
+## Zbudowanie octomapy
 Aby ruch robota mógł być planowany, potrzebna jest informacja o otoczeniu robota. Do tego użyto octomapę, która określa zajętość środowiska. Aby nie przeciążać niepotrzebnie systemu, octomapę zbudowano raz i zapisano do pliku. Taką ocotmapę następnie publikowano, dzięki czemu planer Velmy mógł działać. Zbudowaną ocotmapę przedstawiono na poniższym rysunku.
 
 ![octomap](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/octomap.png)
@@ -61,3 +61,17 @@ Zadanie zostało zaimplementowane jako skończony automat stanu. Takie podejści
 
 Wynikiem programu są następujące ruchy robota:
 
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/move1.png)
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/move_approach.png)
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/move3.png)
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/move4.png)
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/move5.png)
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/move6.png)
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/move67.png)
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/move8.png)
+
+## Pozycja obiektu
+System został zaprogramowany tak, aby robot chwytał obiekt niezależnie od jego początkowej pozycji (pod warunkiem, że jest on w zasięgu ramienia). Jest to możliwe dzięki publikowaniu pozycji obiektu w przestrzeni środowiska. Dzięki temu robot dostosowuje ruch do aktualnego stanu obiektu.
+
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/jar_hollow1.png)
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/jar_hollow2.png)
