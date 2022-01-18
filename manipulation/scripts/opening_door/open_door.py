@@ -4,6 +4,8 @@ import rospy
 from velma_common.velma_interface import VelmaInterface
 from rcprg_ros_utils import exitError
 from tf_conversions import posemath
+import tf2_ros
+import geometry_msgs.msg
 
 if __name__ == "__main__":
     rospy.init_node('cabinet_position')
@@ -21,6 +23,26 @@ if __name__ == "__main__":
 
     obj_pose = posemath.toMsg(T_B_cabinet)
     print(obj_pose)
+
+    br = tf2_ros.TransformBroadcaster()
+    t = geometry_msgs.msg.TransformStamped()
+
+    t.header.stamp = rospy.Time.now()
+    t.header.frame_id = "world"
+    t.child_frame_id = "abc"
+    t.transform.translation.x = obj_pose.position.x - 0.2
+    t.transform.translation.y = obj_pose.position.y
+    t.transform.translation.z = obj_pose.position.z
+
+    t.transform.rotation = obj_pose.orientation
+    br.sendTransform(t)
+
+    rate = rospy.Rate(10) # 10hz
+    while not rospy.is_shutdown():
+        # rospy.loginfo(hello_str)
+        br.sendTransform(t)
+        rate.sleep()
+
 
     # approach_pose = posemath.Pose()
     # approach_pose.position.x = obj_pose.position.x
