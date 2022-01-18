@@ -6,8 +6,9 @@ from rcprg_ros_utils import exitError
 from tf_conversions import posemath
 import tf2_ros
 import geometry_msgs.msg
+import PyKDL
 
-if __name__ == "__main__":
+def init():
     rospy.init_node('cabinet_position')
     rospy.sleep(0.5)
     print("Running python interface for Velma...")
@@ -16,11 +17,16 @@ if __name__ == "__main__":
     if not velma.waitForInit(timeout_s=10.0):
         exitError(1, msg="Could not initialize VelmaInterface")
     print("Initialization ok!")
-    T_B_cabinet = velma.getTf("Wo", "cabinet_handle")
-    print(T_B_cabinet)
+    return velma
+if __name__ == "__main__":
+    velma = init()
+
+    T_Wo_cabinet = velma.getTf("Wo", "cabinet_handle")
+    print(T_Wo_cabinet)
+    T_Wo_cabinet.M.DoRotZ(3.14)
 
 
-    obj_pose = posemath.toMsg(T_B_cabinet)
+    obj_pose = posemath.toMsg(T_Wo_cabinet)
     print(obj_pose)
 
     br = tf2_ros.TransformBroadcaster()
@@ -42,13 +48,4 @@ if __name__ == "__main__":
         rospy.loginfo("sending transormation")
         br.sendTransform(t)
         rate.sleep()
-
-
-    # approach_pose = posemath.Pose()
-    # approach_pose.position.x = obj_pose.position.x
-    # approach_pose.position.z = obj_pose.position.z
-    # approach_pose.position.y = obj_pose.position.y
-    # approach_pose.orientation = obj_pose.orientation
-
-    # print('\nObject pose:\n' , approach_pose)
 
