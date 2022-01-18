@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-import roslib; roslib.load_manifest('velma_task_cs_ros_interface')
+import roslib
+from scripts.picking_from_table.pick_and_place import departure_from_object; roslib.load_manifest('velma_task_cs_ros_interface')
 import rospy
 from velma_common.velma_interface import VelmaInterface,isConfigurationClose
 from rcprg_ros_utils import exitError
@@ -11,6 +12,7 @@ import numpy as np
 from velma_kinematics.velma_ik_geom import KinematicsSolverLWR4, KinematicsSolverVelma
 import math
 
+<<<<<<< HEAD
 def publish_tf(frame):
         obj_pose = posemath.toMsg(frame)
         print(obj_pose)
@@ -63,6 +65,10 @@ def choose_possible_goals(IK, torso_angle, velma):
                 q_map_goals.append(q_map_goal)
             
             return q_map_goals
+=======
+from StateMachine import StateMachine
+
+>>>>>>> 3c937eb3b5103568840c62fba1111fed8e235846
 
 class Conf:
 
@@ -153,5 +159,73 @@ if __name__ == "__main__":
     #         frame =  PyKDL.Frame(rotation, vector) * PyKDL.Frame(PyKDL.Rotation.RPY(0,math.pi/2,0))
     #         T_B_Wr.append(frame*velma.getTf('Gr', 'Wr'))
     #     return T_B_Wr
+
+
+
+
+# def initialization(velma):
+
+#     # TODO
+
+#     newState = "Approach_to_handle"
+#     return (newState, velma)
+
+# def approach_to_handle(velma):
+
+#     # TODO
+
+#     newState = "Open_door"
+#     return (newState, velma)
+
+# def open_door(velma):
+
+#     # TODO
+
+#     newState = "Departure"
+#     return (newState, velma)
+
+# def departure(velma):
+
+#     # TODO
+
+#     newState = "Default_position"
+#     return (newState, velma)
+
+# def default_position(velma):
+
+#     # TODO
+
+#     newState = "Finish"
+#     return (newState, velma)
+
+# def finish(velma):
+#     pass
+
+
+
+# if __name__ == "__main__":
+
+#     rospy.init_node('open_door')
+
+#     rospy.sleep(0.5)
+#     print("Running python interface for Velma...")
+#     conf = Conf()
+#     velma = VelmaInterface()
+
+
+#     m = StateMachine()
+#     m.add_state("Initialization", initialization)
+#     m.add_state("Approach_to_handle", approach_to_handle)
+#     m.add_state("Open_door", open_door)
+#     m.add_state("Departure", departure)
+#     m.add_state("Default_position", default_position)
+#     m.add_state("Finish", finish, end_state=1)
+#     m.set_start("Initialization")
+
+#     m.run(velma)
+
+
+
+
 
 
