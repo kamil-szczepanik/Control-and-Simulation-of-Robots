@@ -16,8 +16,7 @@ if __name__ == "__main__":
     if not velma.waitForInit(timeout_s=10.0):
         exitError(1, msg="Could not initialize VelmaInterface")
     print("Initialization ok!")
-    T_B_cabinet = velma.getTf("B", "cabinet_handle")
-
+    T_B_cabinet = velma.getTf("Wo", "cabinet_handle")
     print(T_B_cabinet)
 
 
@@ -39,7 +38,8 @@ if __name__ == "__main__":
 
     rate = rospy.Rate(10) # 10hz
     while not rospy.is_shutdown():
-        # rospy.loginfo(hello_str)
+        t.header.stamp = rospy.Time.now()
+        rospy.loginfo("sending transormation")
         br.sendTransform(t)
         rate.sleep()
 
