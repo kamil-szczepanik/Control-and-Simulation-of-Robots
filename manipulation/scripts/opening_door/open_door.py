@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-import roslib; roslib.load_manifest('velma_task_cs_ros_interface')
+import roslib
+from scripts.picking_from_table.pick_and_place import departure_from_object; roslib.load_manifest('velma_task_cs_ros_interface')
 import rospy
 from velma_common.velma_interface import VelmaInterface
 from rcprg_ros_utils import exitError
@@ -7,6 +8,8 @@ from tf_conversions import posemath
 import tf2_ros
 import geometry_msgs.msg
 import PyKDL
+
+from StateMachine import StateMachine
 
 
 class Conf:
@@ -76,4 +79,72 @@ if __name__ == "__main__":
         print("sending transormation")
         br.sendTransform(t)
         rate.sleep()
+
+
+
+# def initialization(velma):
+
+#     # TODO
+
+#     newState = "Approach_to_handle"
+#     return (newState, velma)
+
+# def approach_to_handle(velma):
+
+#     # TODO
+
+#     newState = "Open_door"
+#     return (newState, velma)
+
+# def open_door(velma):
+
+#     # TODO
+
+#     newState = "Departure"
+#     return (newState, velma)
+
+# def departure(velma):
+
+#     # TODO
+
+#     newState = "Default_position"
+#     return (newState, velma)
+
+# def default_position(velma):
+
+#     # TODO
+
+#     newState = "Finish"
+#     return (newState, velma)
+
+# def finish(velma):
+#     pass
+
+
+
+# if __name__ == "__main__":
+
+#     rospy.init_node('open_door')
+
+#     rospy.sleep(0.5)
+#     print("Running python interface for Velma...")
+#     conf = Conf()
+#     velma = VelmaInterface()
+
+
+#     m = StateMachine()
+#     m.add_state("Initialization", initialization)
+#     m.add_state("Approach_to_handle", approach_to_handle)
+#     m.add_state("Open_door", open_door)
+#     m.add_state("Departure", departure)
+#     m.add_state("Default_position", default_position)
+#     m.add_state("Finish", finish, end_state=1)
+#     m.set_start("Initialization")
+
+#     m.run(velma)
+
+
+
+
+
 
