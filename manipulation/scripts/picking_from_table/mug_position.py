@@ -26,5 +26,8 @@ if __name__ == "__main__":
     approach_pose = posemath.Pose()
     approach_pose.position.x = obj_pose.position.x - 0.5
     approach_pose.position.z = obj_pose.position.z + 0.1
-    print(approach_pose)
+    approach_pose.position.y = obj_pose.position.y
+    approach_pose.orientation = obj_pose.orientation
+
+    print '\nObject pose:\n' , approach_pose
 

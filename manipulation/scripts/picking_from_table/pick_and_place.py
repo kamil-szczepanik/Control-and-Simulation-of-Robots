@@ -7,9 +7,74 @@ from velma_common import *
 from rcprg_ros_utils import exitError
 from rcprg_planner import *
 from velma_kinematics.velma_ik_geom import KinematicsSolverVelma
+from tf_conversions import posemath
 import numpy as np
 
 import math
+
+class Configer():
+    def __init__(self, velma):
+        self.velma = velma
+
+    def get_cirle(self, x_offset,y_offset,r=0.3):
+        X = []
+        Y = []
+        points = []
+        for theta in np.linspace(-math.pi, math.pi, 20):
+            x = r*math.cos(theta) + x_offset
+            y = r*math.sin(theta) + y_offset
+            X.append(x)
+            Y.append(y)
+            points.append((x,y))
+        return points
+
+    def get_frames(self):
+        T_B_Jar = self.velma.getTf("B", "jar_hollow")
+        print(T_B_Jar)
+        obj_pose = posemath.toMsg(T_B_Jar)
+        print(obj_pose)
+        frames = []
+        x_y_points = self.get_cirle(obj_pose.position.x, obj_pose.position.y)
+        for x, y in x_y_points:
+            vec = PyKDL.Vector(x,y,obj_pose.position.z+ 0.05)
+            orient = PyKDL.Rotation.RPY(0,0, math.atan2((obj_pose.position.y-y),(obj_pose.position.x-x)))
+            frame =  PyKDL.Frame(orient, vec)
+            frames.append(frame)
+        return frames
+
+
+        
+    def get_flips(self):
+        flips = []
+        for flip_shoulder in (True, False):
+            for flip_elbow in (True, False):
+                for flip_ee in (True, False):
+                    flips.append( (flip_shoulder, flip_elbow, flip_ee))
+
+        return flips
+    def get_confs(self):
+        solv = KinematicsSolverVelma()
+        flips = self.get_flips()
+        arm_q = []
+        frames = self.get_frames()
+        js = self.velma.getLastJointState()[1]
+        for frame in frames:
+            for flip_shoulder, flip_elbow, flip_ee in flips:
+                for torso_angle in np.linspace(-1,1,5):
+                    for elbow_circle_angle in np.linspace(-2, 2, 20):
+                        arm_conf = solv.calculateIkLeftArm(frame, torso_angle, elbow_circle_angle, flip_shoulder, flip_elbow, flip_ee)
+                        if not arm_conf[0] is None:
+                            print(arm_conf)
+
+                            q_dict = js.copy()
+                            q_dict['torso_0_joint'] = torso_angle
+                            for i in range(len(arm_conf)):
+                                # if i > 0:
+                                q_dict['left_arm_{}_joint'.format(i)] = arm_conf[i]
+                                # else:
+                                    
+                            arm_q.append(q_dict)
+        return arm_q
 
 class StateMachine:
     
@@ -92,7 +157,7 @@ def initialization(velma):
     oml = OctomapListener("/octomap_binary")
     rospy.sleep(1.0)
     octomap = oml.getOctomap(timeout_s=5.0)
-    p.processWorld(octomap)
+    # p.processWorld(octomap)
     print("octomap connected successfully")
 
 
@@ -127,7 +192,10 @@ def initialization(velma):
     # get initial configuration
     js_init = velma.getLastJointState()
 
-    planAndExecute(q_map_1, p)
+    # planAndExecute(q_map_1, p)
+    conf = Configer(velma)
+    global cnt_err
+    planAndExecute_list(conf.get_confs(), p)
 
     print "Switch to cart_imp mode (no trajectory)..."
     if not velma.moveCartImpRightCurrentPos(start_time=0.2):
@@ -158,6 +226,8 @@ def initialization(velma):
     return (newState, velma)
 
 def planAndExecute(q_dest, p):
+    global cnt_err
+    cnt_err = 0
     print "Planning motion to the goal position using set of all joints..."
     print "Moving to valid position, using planned trajectory."
     goal_constraint = qMapToConstraints(q_dest, 0.01, group=velma.getJointGroup("impedance_joints"))
@@ -166,6 +236,8 @@ def planAndExecute(q_dest, p):
         js = velma.getLastJointState()
         print "Planning (try", i, ")..."
         traj = p.plan(js[1], [goal_constraint], "impedance_joints", max_velocity_scaling_factor=0.15, planner_id="RRTConnect")
+        print("cnt increment")
+        cnt_err+=1
         if traj == None:
             continue
         print "Executing trajectory..."
@@ -174,55 +246,55 @@ def planAndExecute(q_dest, p):
         if velma.waitForJoint() == 0:
             break
         else:
-            print "The trajectory could not be completed, retrying..."
+            print ("The trajectory could not be completed, retrying...")
+            
             continue
     rospy.sleep(0.5)
     js = velma.getLastJointState()
     if not isConfigurationClose(q_dest, js[1]):
+
         exitError(6)
 
+
+def planAndExecute_list(q_dest_list, p):
+    for q_dest in q_dest_list:
+        print "Planning motion to the goal position using set of all joints..."
+        print "Moving to valid position, using planned trajectory."
+        goal_constraint = qMapToConstraints(q_dest, 0.01, group=velma.getJointGroup("impedance_joints"))
+        for i in range(5):
+            rospy.sleep(0.5)
+            js = velma.getLastJointState()
+            print "Planning (try", i, ")..."
+            traj = p.plan(js[1], [goal_constraint], "impedance_joints", max_velocity_scaling_factor=0.15, planner_id="RRTConnect")
+            if traj == None:
+                continue
+            print "Executing trajectory..."
+            if not velma.moveJointTraj(traj, start_time=0.5):
+                exitError(5)
+            if velma.waitForJoint() == 0:
+                break
+            else:
+                print ("The trajectory could not be completed, retrying...")
+                
+                continue
+        rospy.sleep(0.5)
+        js = velma.getLastJointState()
+        if not isConfigurationClose(q_dest, js[1]):
+            print("nie udalo sie")
+            # exitError(6)
+
+
 def jmove(velma):
-
-    T_B_Jar = velma.getTf("B", "frame_01")
-
-    if T_B_Jar is None:
-        exitError(1)
-
-    flips = []
-    for flip_shoulder in (True, False):
-        for flip_elbow in (True, False):
-            for flip_ee in (True, False):
-                flips.append( (flip_shoulder, flip_elbow, flip_ee) )
-    solv = KinematicsSolverVelma()
-    torso_angle = 0.0
-    arm_name = "left"
-
-
-    if arm_name == 'right':
-        central_point = PyKDL.Vector( 0.7, -0.7, 1.4 )
-    else:
-        central_point = PyKDL.Vector( 0.7, 0.7, 1.4 )
-
-    torso_angle = 0.0
-
-
-    js = velma.getLastJointState()[1]
-    T_B_A7d = PyKDL.Frame(PyKDL.Rotation.RPY(*rpy), PyKDL.Vector(*xyz))
-    arm_q = []
-    for flip_shoulder, flip_elbow, flip_ee in flips:
-        for elbow_circle_angle in np.linspace(-math.pi, math.pi, 20):
-            q = solv.calculateIkArm(arm_name, T_B_A7d, torso_angle, elbow_circle_angle, flip_shoulder, flip_elbow, flip_ee)
-
-            if not q[0] is None:
-                q_dict = js.copy()
-                for i in range(len(q)):
-                    if i > 0:
-                        q_dict['right_arm_{}_joint'.format(i)] = q[i]
-                    else:
-                        q_dict['torso_0_joint'] = q[i]
-                arm_q.append(q_dict)
+    global p
     
-    print(q_dict)
+    conf = Configer(velma)
+
+    planAndExecute(conf.get_confs()[cnt_err], p)
+
+    newState = "Departure_from_object"
+    return (newState, velma)
+
+
 
 def grab_jar(velma):
     dest_q = [math.radians(180), math.radians(180), math.radians(180), math.radians(0)]
@@ -239,8 +311,28 @@ def grab_jar(velma):
 def approach_to_object(velma):
 
 
+    T_B_Jar = velma.getTf("B", "jar_hollow")
+
+    obj_pose = posemath.toMsg(T_B_Jar)
+    # print(obj_pose)
+
+    approach_pose = posemath.Pose()
+    approach_pose.position.x = obj_pose.position.x - 0.4
+    approach_pose.position.y = obj_pose.position.y
+    approach_pose.position.z = obj_pose.position.z + 0.1
+    approach_pose.orientation = obj_pose.orientation
+
+    grab_pose = posemath.Pose()
+    grab_pose.position.x = obj_pose.position.x - 0.25
+    grab_pose.position.y = obj_pose.position.y
+    grab_pose.position.z = obj_pose.position.z + 0.1
+    grab_pose.orientation = obj_pose.orientation
+
+    print '\nObject pose:\n' , approach_pose
+
+
     print "Moving left wrist to pose defined in world frame..."
-    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039055, 0.016422, 0.9991, 0.00098 ), PyKDL.Vector( 0.43, 0.46, 0.97 ))
+    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039055, 0.016422, 0.9991, 0.00098 ), PyKDL.Vector( approach_pose.position.x, approach_pose.position.y, approach_pose.position.z ))
     if not velma.moveCartImpLeft([T_B_Trd], [5.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
         exitError(8)
     if velma.waitForEffectorLeft() != 0:
@@ -251,11 +343,11 @@ def approach_to_object(velma):
     print T_B_T_diff
     print T_B_T_diff.vel.Norm()
     print T_B_T_diff.rot.Norm()
-    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.06:
+    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.15:
         exitError(10)
 
     print "Moving left wrist to pose defined in world frame..."
-    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039, 0.016, 1, 0.0 ), PyKDL.Vector( 0.6, 0.48, 0.97 ))
+    T_B_Trd = PyKDL.Frame(PyKDL.Rotation.Quaternion( 0.039, 0.016, 1, 0.0 ), PyKDL.Vector( grab_pose.position.x, grab_pose.position.y, grab_pose.position.z ))
     if not velma.moveCartImpLeft([T_B_Trd], [3.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
         exitError(8)
     if velma.waitForEffectorLeft() != 0:
@@ -266,7 +358,7 @@ def approach_to_object(velma):
     print T_B_T_diff
     print T_B_T_diff.vel.Norm()
     print T_B_T_diff.rot.Norm()
-    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.07:
+    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.15:
         exitError(10)
 
     newState = "Grab_object"
@@ -296,7 +388,7 @@ def departure_from_object(velma):
     print T_B_T_diff
     print T_B_T_diff.vel.Norm()
     print T_B_T_diff.rot.Norm()
-    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.06:
+    if T_B_T_diff.vel.Norm() > 0.05 or T_B_T_diff.rot.Norm() > 0.15:
         exitError(10)
 
     print("Moving to second table...")
