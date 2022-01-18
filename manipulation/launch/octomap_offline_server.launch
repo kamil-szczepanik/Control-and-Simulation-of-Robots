@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
  <launch>
-   <arg name="octomap_file" default="$(find manipulation)/data/octomap_lab.bt"/>
+   <arg name="octomap_file" default="$(find manipulation)/data/octomap_door.bt"/>
    <node name="om_server" pkg="octomap_server" type="octomap_server_node" output="screen" args="$(arg octomap_file)" >
    <param name="frame_id" type="string" value="world" />
  </node>
