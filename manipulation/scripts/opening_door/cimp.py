@@ -63,11 +63,47 @@ class Cimp:
 
     def set_impedance(self, x, y, z, roll, pitch, yaw, hand='left'):
         if hand == 'left':
+            print "Switch to cart_imp mode (no trajectory)..."
+            if not self.velma.moveCartImpLeftCurrentPos(start_time=0.2):
+                exitError(10)
+            if self.velma.waitForEffectorLeft() != 0:
+                exitError(11)
+        
+            rospy.sleep(0.5)
+        
+            diag = self.velma.getCoreCsDiag()
+            if not diag.inStateCartImp():
+                print "The core_cs should be in cart_imp state, but it is not"
+                exitError(12)
+        
+            print "To see the tool frame add 'tf' in rviz and enable 'right_arm_tool' frame."
+            print "At every state switch to cart_imp, the tool frames are reset."
+            print "Also, the tool impedance parameters are reset to 1500N/m in every"\
+                " direction for linear stiffness and to 150Nm/rad in every direction for angular"\
+                " stiffness, i.e. (1500,1500,1500,150,150,150)."
             if not self.velma.moveCartImpLeft(None, None, None, None, [PyKDL.Wrench(PyKDL.Vector(x, y, z), PyKDL.Vector(roll, pitch, yaw))], [2], PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
                 exitError(2)
             if self.velma.waitForEffectorLeft() != 0:
                 exitError(2)
         else:
+            print "Switch to cart_imp mode (no trajectory)..."
+            if not self.velma.moveCartImpLeftCurrentPos(start_time=0.2):
+                exitError(10)
+            if self.velma.waitForEffectorLeft() != 0:
+                exitError(11)
+        
+            rospy.sleep(0.5)
+        
+            diag = self.velma.getCoreCsDiag()
+            if not diag.inStateCartImp():
+                print "The core_cs should be in cart_imp state, but it is not"
+                exitError(12)
+        
+            print "To see the tool frame add 'tf' in rviz and enable 'right_arm_tool' frame."
+            print "At every state switch to cart_imp, the tool frames are reset."
+            print "Also, the tool impedance parameters are reset to 1500N/m in every"\
+                " direction for linear stiffness and to 150Nm/rad in every direction for angular"\
+                " stiffness, i.e. (1500,1500,1500,150,150,150)."
             if not self.velma.moveCartImpRight(None, None, None, None, [PyKDL.Wrench(PyKDL.Vector(x, y, z), PyKDL.Vector(roll, pitch, yaw))], [2], PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
                 exitError(2)
             if self.velma.waitForEffectorRight() != 0:
