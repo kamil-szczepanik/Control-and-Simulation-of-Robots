@@ -168,7 +168,6 @@ if __name__ == "__main__":
 def initialization(velma):
 
     print ("Running python interface for Velma...")
-    velma = VelmaInterface()
     print ("Waiting for VelmaInterface initialization...")
     if not velma.waitForInit(timeout_s=10.0):
         print ("Could not initialize VelmaInterface\n")
@@ -191,26 +190,42 @@ def initialization(velma):
         exitError(1)
     print ("Head tilt motor homing successful.")
 
-    
-
-
-
-
-
     newState = "Approach_to_handle"
     return (newState, velma)
 
 def approach_to_handle(velma):
 
-    # TODO
 
-    newState = "Open_door"
-    return (newState, velma)
+    print("Closing grippers")
+    grippers.close_grippers("right")
+    grippers.close_grippers("left")
+
+    if jimp.move_to_handle(planner, solver, hand):
+        newState = "Open_door"
+        return (newState, velma)
+    else:
+        print("Failed, trying again")
+        newState = "Approach_to_handle"
+        return (newState, velma)
+
+    
 
 def open_door(velma):
 
-    # TODO
-
+    cimp.set_impedance(30, 30, 200, 100, 100, 100)
+    cimp.move_tool(hand, solver, x=-0.2, y=-0.1)
+    rospy.sleep(1)
+    cimp.move_tool(hand, solver, x=-0.15, y=-0.1)
+    rospy.sleep(1)
+    cimp.move_tool(hand, solver, x=-0.1, y=-0.2)
+    print('release handle')
+    rospy.sleep(5)
+    grippers.grippers_release_handle(hand)
+    cimp.set_impedance(75, 20, 200, 100, 100, 100)
+    cimp.move_tool(hand, solver, x=-0.2, y=0.02)
+    rospy.sleep(2)
+    grippers.grippers_push(hand)
+    
     newState = "Departure"
     return (newState, velma)
 
@@ -255,6 +270,7 @@ if __name__ == "__main__":
     jimp = Jimp(velma)
     cimp = Cimp(velma)
     grippers = Grippers(velma)
+    hand = 'left'
     
 
     m = StateMachine()

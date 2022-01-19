@@ -192,13 +192,15 @@ class Jimp:
     def get_pose_in_front(self, hand):
         frames = []
 
-        handle_frame = self.velma.getTf('B', 'right_handle').p
+        handle_frame = self.velma.getTf('B', 'cabinet_handle').p
 
         x = handle_frame.x() - 0.1
         y = handle_frame.y()
         z = handle_frame.z() + 0.08
 
         roll = 0
+        if hand == 'left':
+            roll = 3.14
         pitch = 0
         yaw = 0
         rotation = PyKDL.Rotation.RPY(roll, pitch, yaw)

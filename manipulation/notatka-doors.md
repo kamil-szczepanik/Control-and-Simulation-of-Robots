@@ -7,11 +7,18 @@ roslaunch manipulation doors.launch
 Odpalenie gazebo i rviza:
 roslaunch manipulation sim.launch
 
+Odpalenie offline octomapy:
+roslaunch manipulation octomap_offline_server.launch
+
+Odpalenie planera:
+roslaunch velma_ros_plugin velma_planner.launch
+
 Odpalenie publikowania pozycji klamki:
 roslaunch rcprg_gazebo_utils gazebo_publish_ros_tf_object.launch link_name:="cabinet_door_fragile::left_handle" frame_id:="cabinet_handle"
 
 Inicjalizacja robota:
 rosrun velma_task_cs_ros_interface initialize_robot.py
+
 
 Odpalenie open_door
 rosrun manipulation open_door.py
