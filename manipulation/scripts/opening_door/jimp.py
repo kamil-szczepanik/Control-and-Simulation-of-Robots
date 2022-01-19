@@ -35,6 +35,8 @@ class Jimp:
             print ("The core_cs should be in jnt_imp state, but it is not")
             exitError(3)
 
+
+
     def move_to_init_pose(self, planner):
         init_pose = {
             'torso_0_joint':0,
@@ -211,6 +213,13 @@ class Jimp:
             frame =  PyKDL.Frame(rotation, vector) * PyKDL.Frame(PyKDL.Rotation.RPY(0,math.pi/2,0)) * PyKDL.Frame(PyKDL.Rotation.RPY(0,0,math.pi))
         frames.append(frame)
         return frames
+
+
+    def get_handle_angle(self):
+        handle_frame = self.velma.getTf('B', 'cabinet_handle')
+        handle_orientation = handle_frame.M
+
+        return handle_orientation.GetRPY()[2] - math.pi
 
     def get_tool_pose(self, velma_pose, solver, hand):
         q = (
