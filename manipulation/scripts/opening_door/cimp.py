@@ -11,12 +11,18 @@ class Cimp:
     def __init__(self, velma):
         self.velma = velma
 
-    def switch_to_cimp(self):
+    def switch_to_cimp(self, hand='left'):
         print ("Switch to cart_imp mode (no trajectory)...")
-        if not self.velma.moveCartImpRightCurrentPos(start_time=0.2):
-            exitError(3)
-        if self.velma.waitForEffectorRight() != 0:
-            exitError(3)
+        if hand == 'left':
+            if not self.velma.moveCartImpLeftCurrentPos(start_time=0.2):
+                exitError(3)
+            if self.velma.waitForEffectorLeft() != 0:
+                exitError(3)
+        else:
+            if not self.velma.moveCartImpRightCurrentPos(start_time=0.2):
+                exitError(3)
+            if self.velma.waitForEffectorRight() != 0:
+                exitError(3)
     
         rospy.sleep(0.5)
     
@@ -55,8 +61,14 @@ class Cimp:
             if self.velma.waitForEffectorLeft() != 0:
                 exitError(1)
 
-    def set_impedance(self, x, y, z, roll, pitch, yaw):
-        if not self.velma.moveCartImpRight(None, None, None, None, [PyKDL.Wrench(PyKDL.Vector(x, y, z), PyKDL.Vector(roll, pitch, yaw))], [2], PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
-            exitError(2)
-        if self.velma.waitForEffectorRight() != 0:
-            exitError(2)
+    def set_impedance(self, x, y, z, roll, pitch, yaw, hand='left'):
+        if hand == 'left':
+            if not self.velma.moveCartImpLeft(None, None, None, None, [PyKDL.Wrench(PyKDL.Vector(x, y, z), PyKDL.Vector(roll, pitch, yaw))], [2], PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
+                exitError(2)
+            if self.velma.waitForEffectorLeft() != 0:
+                exitError(2)
+        else:
+            if not self.velma.moveCartImpRight(None, None, None, None, [PyKDL.Wrench(PyKDL.Vector(x, y, z), PyKDL.Vector(roll, pitch, yaw))], [2], PyKDL.Wrench(PyKDL.Vector(5,5,5), PyKDL.Vector(5,5,5)), start_time=0.5):
+                exitError(2)
+            if self.velma.waitForEffectorRight() != 0:
+                exitError(2)

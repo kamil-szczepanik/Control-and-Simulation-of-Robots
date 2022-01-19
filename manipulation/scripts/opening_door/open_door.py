@@ -212,16 +212,22 @@ def approach_to_handle(velma):
 
 def open_door(velma):
 
+
+    print("Opening door")
     cimp.set_impedance(30, 30, 200, 100, 100, 100)
-    cimp.move_tool(hand, solver, x=-0.2, y=-0.1)
+    print("Move: 1")
+    cimp.move_tool(hand, solver, x=-0.2, y=0.1)
     rospy.sleep(1)
-    cimp.move_tool(hand, solver, x=-0.15, y=-0.1)
+    print("Move: 2")
+    cimp.move_tool(hand, solver, x=-0.15, y=0.1)
     rospy.sleep(1)
-    cimp.move_tool(hand, solver, x=-0.1, y=-0.2)
+    print("Move: 3")
+    cimp.move_tool(hand, solver, x=-0.1, y=0.2)
     print('release handle')
     rospy.sleep(5)
     grippers.grippers_release_handle(hand)
     cimp.set_impedance(75, 20, 200, 100, 100, 100)
+    print("Move: 4")
     cimp.move_tool(hand, solver, x=-0.2, y=0.02)
     rospy.sleep(2)
     grippers.grippers_push(hand)
