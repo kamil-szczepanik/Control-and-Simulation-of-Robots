@@ -44,7 +44,9 @@ def initialization(velma):
         exitError(1)
     print ("Head tilt motor homing successful.")
 
-    newState = "Approach_to_handle"
+    # newState = "Approach_to_handle"
+    newState = "Departure"
+
     return (newState, velma)
 
 def approach_to_handle(velma):
@@ -84,16 +86,40 @@ def open_door(velma):
     cimp.move_tool(hand, solver, x=-0.2, y=0.07)
     rospy.sleep(2)
     grippers.grippers_push(hand)
-    
+
+
     newState = "Departure"
     return (newState, velma)
 
 def departure(velma):
-    
+
     cimp.set_impedance(75, 20, 200, 100, 100, 100)
-    print("Move: 3")
+    print("Move: 4")
     cimp.move_tool(hand, solver, x=0, y=0.1)
     rospy.sleep(2)
+    cimp.set_impedance(75, 20, 200, 100, 100, 100)
+    print("Move: 5")
+    cimp.move_tool(hand, solver, x=0.05, y=0.15)
+    rospy.sleep(2)
+    print("Move: 6")
+    cimp.move_tool(hand, solver, x=0.05, y=0.15)
+    rospy.sleep(2)
+    cimp.set_impedance(75, 20, 200, 100, 100, 100)
+    print("Move: 7")
+    cimp.move_tool(hand, solver, x=0.15, y=0.15)
+    rospy.sleep(2)
+    cimp.set_impedance(75, 20, 200, 100, 100, 100)
+    print("Move: 8")
+    cimp.move_tool(hand, solver, x=0.2, y=0.2)
+    rospy.sleep(2)
+    print("Move: 9")
+    cimp.move_tool(hand, solver, x=0.25, y=0.3)
+    rospy.sleep(2)
+    
+    
+
+
+
 
     newState = "Default_position"
     return (newState, velma)
