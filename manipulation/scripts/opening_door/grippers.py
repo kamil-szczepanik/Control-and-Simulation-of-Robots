@@ -39,7 +39,7 @@ class Grippers:
         self.move_gripper(q, selected)
 
     def grippers_release_handle(self, selected):
-        q = [self.deg2rad(60), self.deg2rad(60), self.deg2rad(60), 0]
+        q = [self.deg2rad(75), self.deg2rad(75), self.deg2rad(60), 0]
         self.move_gripper(q, selected)
 
     def grippers_push(self, selected):
