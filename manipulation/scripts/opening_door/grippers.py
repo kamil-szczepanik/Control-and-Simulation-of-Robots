@@ -45,3 +45,7 @@ class Grippers:
     def grippers_push(self, selected):
         q = [self.deg2rad(90), self.deg2rad(90), self.deg2rad(90), 0]
         self.move_gripper(q, selected)
+
+    def grippers_open_thumb(self, selected):
+        q = [self.deg2rad(90), self.deg2rad(90), self.deg2rad(45), 0]
+        self.move_gripper(q, selected)
