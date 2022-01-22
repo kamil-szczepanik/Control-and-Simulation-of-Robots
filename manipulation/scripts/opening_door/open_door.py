@@ -51,8 +51,8 @@ def initialization(velma):
 def approachToHandle(velma):
 
     print("Closing grippers")
-    grippers.close_grippers("right")
-    grippers.close_grippers("left")
+    grippers.closeGrippers("right")
+    grippers.closeGrippers("left")
 
     if jimp.moveHandToHandle(planner, solver, hand):
         newState = "Open_door"
@@ -67,12 +67,12 @@ def openDoor(velma):
 
     print("Opening door")
     rospy.sleep(5)
-    grippers.grippers_release_handle(hand)
+    grippers.grippersReleaseHandle(hand)
     cimp.setImpedance(30, 30, 200, 100, 100, 100)
     print("Move: 1")
     cimp.moveAndRotateHand(hand, solver, x=-0.1, y=0.07)
     rospy.sleep(1)
-    grippers.grippers_push(hand)
+    grippers.grippersGrabHandle(hand)
 
     newState = "Departure"
     return (newState, velma)
@@ -98,9 +98,9 @@ def departure(velma):
     cimp.moveAndRotateHand(hand, solver,x=0.4, y=0.5)
     rospy.sleep(2)
 
-    grippers.grippers_release_handle(hand)
+    grippers.grippersReleaseHandle(hand)
     rospy.sleep(2)
-    grippers.open_grippers(hand)
+    grippers.openGrippers(hand)
     cimp.moveAndRotateHand(hand, solver,x=0.3, y=0.3)
 
     newState = "Default_position"
