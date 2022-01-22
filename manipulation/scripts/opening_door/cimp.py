@@ -11,57 +11,8 @@ class Cimp:
     def __init__(self, velma):
         self.velma = velma
 
-    def switch_to_cimp(self, hand='left'):
-        print ("Switch to cart_imp mode (no trajectory)...")
-        if hand == 'left':
-            if not self.velma.moveCartImpLeftCurrentPos(start_time=0.2):
-                exitError(3)
-            if self.velma.waitForEffectorLeft() != 0:
-                exitError(3)
-        else:
-            if not self.velma.moveCartImpRightCurrentPos(start_time=0.2):
-                exitError(3)
-            if self.velma.waitForEffectorRight() != 0:
-                exitError(3)
-    
-        rospy.sleep(0.5)
-    
-        diag = self.velma.getCoreCsDiag()
-        if not diag.inStateCartImp():
-            print ("The core_cs should be in cart_imp state, but it is not")
-            exitError(3)
 
-    def move_tool(self, hand, solver, x=0.0, y= 0.0, z=0.0):
-        time, velma_pos = self.velma.getLastJointState()
-        configuration = (   velma_pos[hand + '_arm_0_joint'],
-                        velma_pos[hand + '_arm_1_joint'],
-                        velma_pos[hand + '_arm_2_joint'],
-                        velma_pos[hand + '_arm_3_joint'],
-                        velma_pos[hand + '_arm_4_joint'],
-                        velma_pos[hand + '_arm_5_joint'],
-                        velma_pos[hand + '_arm_6_joint']    )
-
-        if hand == 'right':
-            frame = solver.getRightArmFk(velma_pos['torso_0_joint'], configuration)
-        else:
-            frame = solver.getLeftArmFk(velma_pos['torso_0_joint'], configuration)
-            
-        p = PyKDL.Vector(x, y, z)
-        p = frame * p
-        frame.p = p
-
-        if hand == 'right':
-            if not self.velma.moveCartImpRight([frame], [3.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(1,1,1), PyKDL.Vector(1,1,1))):
-                exitError(1)
-            if self.velma.waitForEffectorRight() != 0:
-                exitError(1)
-        else:
-            if not self.velma.moveCartImpLeft([frame], [3.0], None, None, None, None, PyKDL.Wrench(PyKDL.Vector(1,1,1), PyKDL.Vector(1,1,1))):
-                exitError(1)
-            if self.velma.waitForEffectorLeft() != 0:
-                exitError(1)
-
-    def move_and_rotate_tool(self, hand, solver, x=0.0, y= 0.0, z=0.0, roll=0.0, pitch= 0.0, yaw=0.0):
+    def moveAndRotateHand(self, hand, solver, x=0.0, y= 0.0, z=0.0, roll=0.0, pitch= 0.0, yaw=0.0):
         time, velma_pos = self.velma.getLastJointState()
         configuration = (   velma_pos[hand + '_arm_0_joint'],
                         velma_pos[hand + '_arm_1_joint'],
@@ -94,7 +45,7 @@ class Cimp:
             if self.velma.waitForEffectorLeft() != 0:
                 exitError(1)
 
-    def set_impedance(self, x, y, z, roll, pitch, yaw, hand='left'):
+    def setImpedance(self, x, y, z, roll, pitch, yaw, hand='left'):
         if hand == 'left':
             print "Switch to cart_imp mode (no trajectory)..."
             if not self.velma.moveCartImpLeftCurrentPos(start_time=0.2):
