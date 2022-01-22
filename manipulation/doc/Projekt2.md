@@ -23,3 +23,36 @@ Program został zaimplementowany jako skończony automat stanów. Następujące 
 **Otworzenie drzwi - złapanie klamki i uchylenie drzwi** odbywa się w przesterzeni kartezjańskiej
 
 **Pełne otworzenie drzwi** również odbywa się w przestrzeni kartezjańskiej. 
+
+## Środowisko
+
+Na potrzeby zadania stworzono środowisko w symulatorze gazebo. Znajduje się w nim stół, a na nim szafka, którą robot otwiera.
+
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/project2/gazebo_env.png)
+
+## Planowanie
+
+Planowanie ruchu w przestrzeni stawów odbywa się za pomocą planera Velmy. Korzysta on z octomapy otoczenia, którą wcześniej udało się zebrać. Pozycja uchwytu szafki pobierana jest z symulatora i na jej podstawie wyznaczana jest pozycja przygotowująca do chwytu.
+
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/project2/rviz_octomap.png)
+
+## Działanie programu
+
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/project2/closing_grippers.png)
+
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/project2/grip_position.png)
+
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/project2/2.png)
+
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/project2/3.png)
+
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/project2/4.png)
+
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/project2/5.png)
+
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/project2/6.png)
+
+![](https://github.com/STERO-21Z/szczepanik-hondra/blob/tiago/manipulation/images/project2/7.png)
+
+
+**Robot z powodzeniem otwiera szafkę**
